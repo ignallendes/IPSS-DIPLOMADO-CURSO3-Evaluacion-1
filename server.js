@@ -70,10 +70,34 @@ const app = express()
 const PORT = 3000
 app.use(express.json())
 
+//Rutas Base
 app.get('/api/selecciones', (req, res) => {
-  res.json(selecciones)
+    if (req.query.continente) {
+        const continente = req.query.continente
+        const continenteEncontrado = continentes.find(
+            c => c.nombre.toLowerCase() === continente?.toLowerCase()
+        );
+        const seleccionesFiltradas = selecciones.filter(
+            s => s.continenteId === continenteEncontrado.id
+        );
+        return res.json(seleccionesFiltradas);
+    }
+    res.json(selecciones)
 })
 
-app.listen(PORT, () => {
-  console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
+app.get('/api/selecciones/:id', (req, res) => {
+    const { id } = req.params
+    const seleccion = selecciones.find(s => s.id === id)
+    if (!seleccion) {
+        return res.status(404).json({ error: 'Selección no encontrada' })
+    }
+    res.json(seleccion)
 })
+
+
+
+app.listen(PORT, () => {
+    console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
+})
+
+
