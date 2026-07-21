@@ -72,21 +72,32 @@ app.use(express.json())
 
 //Rutas Base
 app.get('/api/selecciones', (req, res) => {
+    // Filtrar por contienente
     if (req.query.continente) {
         const continente = req.query.continente
         const continenteEncontrado = continentes.find(
             c => c.nombre.toLowerCase() === continente?.toLowerCase()
         );
+        if (!continenteEncontrado) {
+            return res.status(404).json({ error: 'Continente no encontrado' })
+        }
         const seleccionesFiltradas = selecciones.filter(
             s => s.continenteId === continenteEncontrado.id
         );
         return res.json(seleccionesFiltradas);
     }
+    // Filtrar por campeon
+    const campeon = req.query.campeon
+    if (campeon === 'true') {
+        const seleccionesCampeonas = selecciones.filter(s => s.copas.length > 0);
+        return res.json(seleccionesCampeonas);
+    }
+  
     res.json(selecciones)
 })
 
 app.get('/api/selecciones/:id', (req, res) => {
-    const  id  =  Number(req.params.id);
+    const id = Number(req.params.id);
     const seleccion = selecciones.find(s => s.id === id)
     if (!seleccion) {
         return res.status(404).json({ error: 'Selección no encontrada' })
