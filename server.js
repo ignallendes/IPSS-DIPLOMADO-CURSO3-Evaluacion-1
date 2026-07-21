@@ -13,7 +13,7 @@
 //     npm run dev        (se reinicia solo al guardar)
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { continentes, grupos, selecciones, partidos } from './datos-mundial.js'
+
 
 // TODO: importa express y crea tu app.
 //
@@ -23,7 +23,6 @@ import { continentes, grupos, selecciones, partidos } from './datos-mundial.js'
 // Recuerda el middleware que hace falta para leer el cuerpo de los POST,
 // y configura CORS (lo vas a necesitar para el video).
 
-const PORT = 3000
 
 // ─────────────────────────────────────────────────────────────────────────────
 // TUS RUTAS
@@ -65,3 +64,16 @@ const PORT = 3000
 //   app.listen(PORT, () => {
 //     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
 //   })
+import { continentes, grupos, selecciones, partidos } from './datos-mundial.js'
+import express from 'express'
+const app = express()
+const PORT = 3000
+app.use(express.json())
+
+app.get('/api/selecciones', (req, res) => {
+  res.json(selecciones)
+})
+
+app.listen(PORT, () => {
+  console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
+})
