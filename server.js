@@ -86,7 +86,7 @@ app.get('/api/selecciones', (req, res) => {
 })
 
 app.get('/api/selecciones/:id', (req, res) => {
-    const { id } = req.params
+    const  id  =  Number(req.params.id);
     const seleccion = selecciones.find(s => s.id === id)
     if (!seleccion) {
         return res.status(404).json({ error: 'Selección no encontrada' })
