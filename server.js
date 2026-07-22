@@ -70,7 +70,7 @@ const app = express()
 const PORT = 3000
 app.use(express.json())
 
-//Rutas Base
+//Rutas selecciones
 app.get('/api/selecciones', (req, res) => {
     // Filtrar por contienente
     if (req.query.continente) {
@@ -105,7 +105,11 @@ app.get('/api/selecciones/:id', (req, res) => {
     res.json(seleccion)
 })
 
-
+// Rutas copas
+app.get('/api/copas', (req, res) => {
+    const copas = selecciones.flatMap(s => s.copas)
+    return res.json(copas)
+})
 
 app.listen(PORT, () => {
     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
