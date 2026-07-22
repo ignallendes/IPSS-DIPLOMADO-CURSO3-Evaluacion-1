@@ -92,7 +92,6 @@ app.get('/api/selecciones', (req, res) => {
         const seleccionesCampeonas = selecciones.filter(s => s.copas.length > 0);
         return res.json(seleccionesCampeonas);
     }
-  
     res.json(selecciones)
 })
 
@@ -110,6 +109,20 @@ app.get('/api/copas', (req, res) => {
     const copas = selecciones.flatMap(s => s.copas)
     return res.json(copas)
 })
+
+app.get('/api/copas/:seleccion', (req, res) => {
+    const nombreSeleccion = req.params.seleccion;
+    const buscaEquipo = selecciones.find
+        (s => s.nombre.toLowerCase() === nombreSeleccion?.toLowerCase()
+        );
+    if (!buscaEquipo) {
+        return res.status(404).json({ error: 'Selección no encontrada' })
+    }
+    return res.json(buscaEquipo.copas)
+}
+)
+
+
 
 app.listen(PORT, () => {
     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
