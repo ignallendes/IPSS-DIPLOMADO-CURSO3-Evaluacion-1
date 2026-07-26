@@ -122,7 +122,33 @@ app.get('/api/copas/:seleccion', (req, res) => {
 }
 )
 
+// Rutas estadisticas
 
+// Rutas semifinales y final
+
+app.post('/api/worldcup/2026/semifinals/:n', (req, res) => {
+    const n = Number(req.params.n);
+    if(n > 4){
+        return res.status(400).json({ error: 'Número de semifinal inválido' })
+    }
+    const body = req.body;
+    const semifinales = {
+        numero: n,
+        local : {
+            seleccion1: body.seleccion1,
+            goles1: body.goles1
+        },
+        visita: {
+            seleccion2: body.seleccion2,
+            goles2: body.goles2
+        }
+    }
+    console.log("Hola", )
+
+    partidos.semifinales.push(semifinales)
+    res.json({ message: 'Semifinal registrada', semifinales })
+
+})
 
 app.listen(PORT, () => {
     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
