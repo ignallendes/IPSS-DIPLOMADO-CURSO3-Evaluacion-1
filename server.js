@@ -73,8 +73,8 @@ app.use(express.json())
 //Rutas selecciones
 app.get('/api/selecciones', (req, res) => {
     // Filtrar por contienente
-    if (req.query.continente) {
-        const continente = req.query.continente
+    const continente = req.query.continente
+    if (continente) {
         const continenteEncontrado = continentes.find(
             c => c.nombre.toLowerCase() === continente?.toLowerCase()
         );
@@ -192,6 +192,10 @@ app.get('/api/worldcup/2026/semifinals/:n', (req, res) => {
         "visita": {"Selección: ":visita.nombre, "Goles: ":semifinal.visita.goles},
         "ganador": ganador
     })
+})
+
+app.get('/api/worldcup/2026/semifinals', (req, res) => {
+    res.json(partidos.semifinales)
 })
 
 app.listen(PORT, () => {
