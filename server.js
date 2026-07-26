@@ -128,26 +128,70 @@ app.get('/api/copas/:seleccion', (req, res) => {
 
 app.post('/api/worldcup/2026/semifinals/:n', (req, res) => {
     const n = Number(req.params.n);
-    if(n > 4){
+    const body = req.body;
+    if (n > 4 || n < 1) {
         return res.status(400).json({ error: 'Número de semifinal inválido' })
     }
-    const body = req.body;
+    if (body.goles1 < 0 || body.goles2 < 0) {
+        return res.status(400).json({ error: 'Los goles no pueden ser negativos' })
+    }
+    if (body.seleccion1 === body.seleccion2) {
+        return res.status(400).json({ error: 'No se puede registrar un partido entre la misma selección' })
+    }
+    const seleccion1 = selecciones.find(s => s.id === body.seleccion1)
+    const seleccion2 = selecciones.find(s => s.id === body.seleccion2)
+    if (!seleccion1 || !seleccion2) {
+        return res.status(404).json({ error: 'Una o ambas selecciones no encontradas' })
+    }
+
     const semifinales = {
         numero: n,
-        local : {
-            seleccion1: body.seleccion1,
-            goles1: body.goles1
+        local: {
+            seleccionId: body.seleccion1,
+            goles: body.goles1
         },
         visita: {
-            seleccion2: body.seleccion2,
-            goles2: body.goles2
+            seleccionId: body.seleccion2,
+            goles: body.goles2
         }
     }
-    console.log("Hola", )
 
     partidos.semifinales.push(semifinales)
     res.json({ message: 'Semifinal registrada', semifinales })
 
+})
+
+app.get('/api/worldcup/2026/semifinals/:n', (req, res) => {
+    const n = Number(req.params.n);
+    const semifinal = partidos.semifinales.find(s => s.numero === n)
+    if (!semifinal) {
+        return res.status(404).json({ error: 'Semifinal no encontrada' })
+    }
+    const local = selecciones.find(
+        s => s.id === semifinal.local.seleccionId
+    );
+
+    const visita = selecciones.find(
+        s => s.id === semifinal.visita.seleccionId
+    );
+
+    let ganador;
+
+    if (semifinal.local.goles > semifinal.visita.goles) {
+        ganador = local.nombre;
+    }
+    else if (semifinal.visita.goles > semifinal.local.goles) {
+        ganador = visita.nombre;
+    }
+    else {
+        ganador = "Empate";
+    }
+    res.json({
+        "partido": "semifinal " + n,
+        "local": {"Selección: ":local.nombre, "Goles: ":semifinal.local.goles},
+        "visita": {"Selección: ":visita.nombre, "Goles: ":semifinal.visita.goles},
+        "ganador": ganador
+    })
 })
 
 app.listen(PORT, () => {
