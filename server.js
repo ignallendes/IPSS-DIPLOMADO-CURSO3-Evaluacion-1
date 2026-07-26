@@ -64,6 +64,7 @@
 //   app.listen(PORT, () => {
 //     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
 //   })
+import e from 'express'
 import { continentes, grupos, selecciones, partidos } from './datos-mundial.js'
 import express from 'express'
 const app = express()
@@ -199,19 +200,18 @@ app.get('/api/worldcup/2026/semifinals', (req, res) => {
     const resultado = [];
 
     for (let i = 1; i <= 4; i++) {
-
+        let ganador;
         const semifinal = partidos.semifinales.find(
             s => s.numero === i
         );
-        const local = selecciones.find(
-            s => s.id === semifinal.local.seleccionId
-        );
-
-        const visita = selecciones.find(
-            s => s.id === semifinal.visita.seleccionId
-        );
-        let ganador;
         if (semifinal) {
+
+            const local = selecciones.find(
+                s => s.id === semifinal.local.seleccionId
+            );
+            const visita = selecciones.find(
+                s => s.id === semifinal.visita.seleccionId
+            );
             if (semifinal.local.goles > semifinal.visita.goles) {
                 ganador = local.nombre;
             }
@@ -222,21 +222,20 @@ app.get('/api/worldcup/2026/semifinals', (req, res) => {
                 ganador = "Empate";
             }
 
-            if (semifinal) {
-                resultado.push({
-                    "partido": "semifinal " + semifinal.numero,
-                    "local": { "Selección: ": local.nombre, "Goles: ": semifinal.local.goles },
-                    "visita": { "Selección: ": visita.nombre, "Goles: ": semifinal.visita.goles },
-                    "ganador": ganador
-                });
-            } else {
-                resultado.push({
-                    "partido": semifinal.numero,
-                    "local": null,
-                    "visita": null,
-                    "ganador": null
-                });
-            }
+            resultado.push({
+                "partido": "semifinal " + semifinal.numero,
+                "local": { "Selección: ": local.nombre, "Goles: ": semifinal.local.goles },
+                "visita": { "Selección: ": visita.nombre, "Goles: ": semifinal.visita.goles },
+                "ganador": ganador
+            });
+
+        } else {
+            resultado.push({
+                "partido": "Semifinal: " + i,
+                "local": null,
+                "visita": null,
+                "ganador": null
+            });
         }
     }
 
