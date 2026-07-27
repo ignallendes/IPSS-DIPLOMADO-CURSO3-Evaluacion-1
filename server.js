@@ -158,7 +158,7 @@ app.post('/api/worldcup/2026/semifinals/:n', (req, res) => {
     }
 
     partidos.semifinales.push(semifinales)
-    res.json({ message: 'Semifinal registrada', semifinales })
+    res.status(201).json({ message: 'Semifinal registrada', semifinales })  
 
 })
 
@@ -279,11 +279,14 @@ app.post('/api/worldcup/2026/final', (req, res) => {
 
 app.get('/api/worldcup/2026/final', (req, res) => {
 
-    const resultado = [];
     let ganador;
-    const final = partidos.finales.find(
-        s => s.numero === i
-    );
+    if (!partidos.final) {
+        return res.status(404).json({
+            error: "La final aún no se ha jugado"
+        });
+    }
+
+    const final = partidos.final;
     const local = selecciones.find(
         s => s.id === final.local.seleccionId
     );
@@ -300,13 +303,13 @@ app.get('/api/worldcup/2026/final', (req, res) => {
         ganador = "Empate";
     }
 
-    resultado.push({
+    partidos.final = ({
         "partido": "final ",
         "local": { "Selección: ": local.nombre, "Goles: ": final.local.goles },
         "visita": { "Selección: ": visita.nombre, "Goles: ": final.visita.goles },
         "ganador": ganador
     });
-    res.json(resultado);
+    res.json(partidos.final);
 })
 
 app.listen(PORT, () => {
