@@ -242,6 +242,73 @@ app.get('/api/worldcup/2026/semifinals', (req, res) => {
     res.json(resultado);
 })
 
+app.post('/api/worldcup/2026/final', (req, res) => {
+    const body = req.body;
+    if (body.goles1 < 0 || body.goles2 < 0) {
+        return res.status(400).json({ error: 'Los goles no pueden ser negativos' })
+    }
+    if (body.seleccion1 === body.seleccion2) {
+        return res.status(400).json({ error: 'No se puede registrar un partido entre la misma selección' })
+    }
+    const seleccion1 = selecciones.find(s => s.id === body.seleccion1)
+    const seleccion2 = selecciones.find(s => s.id === body.seleccion2)
+    if (!seleccion1 || !seleccion2) {
+        return res.status(404).json({ error: 'Una o ambas selecciones no encontradas' })
+    }
+    if (partidos.final) {
+        return res.status(400).json({
+            error: "La final ya fue registrada"
+        });
+    }
+    const final = {
+        partido: "final",
+        local: {
+            seleccionId: body.seleccion1,
+            goles: body.goles1
+        },
+        visita: {
+            seleccionId: body.seleccion2,
+            goles: body.goles2
+        }
+    }
+
+    partidos.final = final;
+    res.json({ message: 'Final registrada', final })
+
+})
+
+app.get('/api/worldcup/2026/final', (req, res) => {
+
+    const resultado = [];
+    let ganador;
+    const final = partidos.finales.find(
+        s => s.numero === i
+    );
+    const local = selecciones.find(
+        s => s.id === final.local.seleccionId
+    );
+    const visita = selecciones.find(
+        s => s.id === final.visita.seleccionId
+    );
+    if (final.local.goles > final.visita.goles) {
+        ganador = local.nombre;
+    }
+    else if (final.visita.goles > final.local.goles) {
+        ganador = visita.nombre;
+    }
+    else {
+        ganador = "Empate";
+    }
+
+    resultado.push({
+        "partido": "final ",
+        "local": { "Selección: ": local.nombre, "Goles: ": final.local.goles },
+        "visita": { "Selección: ": visita.nombre, "Goles: ": final.visita.goles },
+        "ganador": ganador
+    });
+    res.json(resultado);
+})
+
 app.listen(PORT, () => {
     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
 })
