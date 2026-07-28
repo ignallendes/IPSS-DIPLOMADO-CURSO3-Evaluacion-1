@@ -71,7 +71,7 @@ import cors from 'cors'
 const app = express()
 const PORT = 3000
 
-app.use(cors({ methods: ['GET', 'POST', 'PUT'] }));
+app.use(cors({ methods: ['GET', 'POST', 'PUT', 'DELETE'] }));
 app.use(express.json())
 
 //Rutas selecciones
