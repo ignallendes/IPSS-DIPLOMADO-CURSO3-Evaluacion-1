@@ -14,6 +14,7 @@ El proyecto corre en el pureto 3000
 
 # Enlace de video
 
+https://www.youtube.com/watch?v=nA52aN_1Y8c
 
 # Formado body de rutas
 ## /api/worldcup/2026/semifinals/:n
