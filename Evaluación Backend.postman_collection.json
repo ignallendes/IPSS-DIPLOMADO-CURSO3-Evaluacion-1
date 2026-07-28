@@ -1,0 +1,213 @@
+{
+  "info": {
+    "_postman_id": "cc4302f1-326a-4a67-b0cc-133e82ef2275",
+    "name": "Evaluación Backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "26267550"
+  },
+  "item": [
+    {
+      "name": "/api/selecciones",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/selecciones",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "selecciones"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/selecciones/:id",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "/api/selecciones?continente=",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "/api/selecciones?campeon",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/selecciones?campeon=false",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "selecciones"
+          ],
+          "query": [
+            {
+              "key": "campeon",
+              "value": "false"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/copas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/copas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "copas"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/copas/:seleccion",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "/api/worldcup/2026/semifinals/:n",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"seleccion1\": 1,\r\n    \"goles1\": 1,\r\n    \"seleccion2\": 1,\r\n    \"goles2\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/api/worldcup/2026/semifinals/3",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "worldcup",
+            "2026",
+            "semifinals",
+            "3"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/worldcup/2026/semifinals/:n",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/worldcup/2026/semifinals/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "worldcup",
+            "2026",
+            "semifinals",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/worldcup/2026/semifinals",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "/api/worldcup/2026/final",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/worldcup/2026/final",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "worldcup",
+            "2026",
+            "final"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "/api/worldcup/2026/final",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "/api/estadisticas",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/api/estadisticas",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "api",
+            "estadisticas"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
