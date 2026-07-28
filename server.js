@@ -64,11 +64,14 @@
 //   app.listen(PORT, () => {
 //     console.log(`⚽ API del Mundial escuchando en http://localhost:${PORT}`)
 //   })
-import e from 'express'
 import { continentes, grupos, selecciones, partidos } from './datos-mundial.js'
 import express from 'express'
+import cors from 'cors'
+
 const app = express()
 const PORT = 3000
+
+app.use(cors({ methods: ['GET', 'POST', 'PUT'] }));
 app.use(express.json())
 
 //Rutas selecciones
@@ -125,6 +128,44 @@ app.get('/api/copas/:seleccion', (req, res) => {
 
 // Rutas estadisticas
 
+app.get('/api/estadisticas', (req, res) => {
+
+    const seleccionesPorContinente = selecciones.reduce((acc, s) => {
+
+        const continente = continentes.find(
+            c => c.id === s.continenteId
+        ).nombre;
+
+        acc[continente] = (acc[continente] || 0) + 1;
+
+        return acc;
+
+    }, {});
+
+    const promedioRanking =
+        selecciones.reduce(
+            (acc, s) => acc + s.fifaRanking,
+            0
+        ) / selecciones.length;
+
+    const estadisticas = {
+
+        totalSelecciones: selecciones.length,
+
+        totalCopas: selecciones.reduce(
+            (acc, s) => acc + s.copas.length,
+            0
+        ),
+
+        seleccionesPorContinente,
+
+        promedioRanking
+
+    };
+
+    res.json(estadisticas);
+
+});
 // Rutas semifinales y final
 
 app.post('/api/worldcup/2026/semifinals/:n', (req, res) => {
@@ -273,8 +314,7 @@ app.post('/api/worldcup/2026/final', (req, res) => {
     }
 
     partidos.final = final;
-    res.json({ message: 'Final registrada', final })
-
+    res.status(201).json({ message: 'Final registrada', final })
 })
 
 app.get('/api/worldcup/2026/final', (req, res) => {
